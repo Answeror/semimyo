@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+nvidia-docker run --rm -ti -v $(pwd):/code answeror/sigr:semi python -m sigr.app $@
