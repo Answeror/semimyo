@@ -184,6 +184,8 @@ class EvalMixin(object):
 
     def __init__(self, **kargs):
         self.num_eval_epoch = kargs.pop('num_eval_epoch', 1)
+        if not isinstance(self.num_eval_epoch, (list, tuple)):
+            self.num_eval_epoch = [self.num_eval_epoch]
         super(EvalMixin, self).__init__(**kargs)
 
     def fit(self, train_data, eval_data=None, eval_metric='acc',

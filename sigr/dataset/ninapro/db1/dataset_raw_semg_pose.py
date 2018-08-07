@@ -119,13 +119,13 @@ class Dataset(BaseDataset):
                        batch_size=batch_size)
         train_trials, val_trials = self.get_one_fold_intra_subject_trials()
         train = load(
-            combos=self.get_combos(product(self.subjects, self.gestures, [i for i in train_trials])),
+            combos=self.get_combos(self.subjects, self.gestures, [i for i in train_trials]),
             num_mini_batch=num_mini_batch,
             shuffle=True,
             **kargs
         )
         val = load(
-            combos=self.get_combos(product(self.subjects, self.gestures, [i for i in val_trials])),
+            combos=self.get_combos(self.subjects, self.gestures, [i for i in val_trials]),
             shuffle=False,
             **kargs
         )
@@ -148,12 +148,12 @@ class Dataset(BaseDataset):
         subject = self.subjects[fold]
         train_trials, val_trials = self.get_one_fold_intra_subject_trials()
         train = load(
-            combos=self.get_combos(product([subject], self.gestures, [i for i in train_trials])),
+            combos=self.get_combos([subject], self.gestures, [i for i in train_trials]),
             shuffle=True,
             **kargs
         )
         val = load(
-            combos=self.get_combos(product([subject], self.gestures, [i for i in val_trials])),
+            combos=self.get_combos([subject], self.gestures, [i for i in val_trials]),
             shuffle=False,
             **kargs
         )
@@ -174,7 +174,7 @@ class Dataset(BaseDataset):
         subject = self.subjects[fold]
         train_trials, val_trials = self.get_one_fold_intra_subject_trials()
         val = load(
-            combos=self.get_combos(product([subject], self.gestures, [i for i in val_trials])),
+            combos=self.get_combos([subject], self.gestures, [i for i in val_trials]),
             shuffle=False,
             **kargs
         )
@@ -195,15 +195,14 @@ class Dataset(BaseDataset):
                        batch_size=batch_size)
         subject = self.subjects[fold]
         train = load(
-            combos=self.get_combos(product(
-                [i for i in self.subjects if i != subject],
-                self.gestures,
-                self.trials)),
+            combos=self.get_combos([i for i in self.subjects if i != subject],
+                                   self.gestures,
+                                   self.trials),
             num_mini_batch=num_mini_batch,
             shuffle=True,
             **kargs)
         val = load(
-            combos=self.get_combos(product([subject], self.gestures, self.trials)),
+            combos=self.get_combos([subject], self.gestures, self.trials),
             shuffle=False,
             **kargs
         )
@@ -400,7 +399,7 @@ class GetTrial(object):
         path = self.get_path(combo)
         if path not in self.memo:
             logger.debug('Load subject {}', combo.subject)
-            paths = sorted(set(self.get_path(Combo(combo.subject, gesture, trial))
+            paths = sorted(set(self.get_path(Combo(subject=combo.subject, gesture=gesture, trial=trial))
                                for gesture, trial in self.gesture_and_trials))
             self.memo.update({path: self._segment(*data) for path, data in
                               zip(paths, get_ninapro_db1_semg_pose_data(

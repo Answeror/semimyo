@@ -30,7 +30,7 @@ class Dataset(BaseDataset):
         super(Dataset, self).__init__(*args, **kargs)
 
     def get_trial_func(self, **kargs):
-        return GetTrial(self.root, self.gestures, self.trials, dataset=self, **kargs)
+        return GetTrial(dataset=self, **kargs)
 
     def get_dataiter(self, combos, **kargs):
         get_trial = kargs.pop('get_trial', None)
@@ -152,7 +152,7 @@ class GetTrial(BaseGetTrial):
         path = self.get_path(combo)
         if path not in self.memo:
             logger.debug('Load subject {}', combo.subject)
-            paths = sorted(set(self.get_path(Combo(combo.subject, gesture, trial))
+            paths = sorted(set(self.get_path(Combo(subject=combo.subject, gesture=gesture, trial=trial))
                                for gesture, trial in self.gesture_and_trials))
             self.memo.update({path: self._segment(*data) for path, data in
                               zip(paths, get_ninapro_db1_semg_pose_data(paths, self.preprocess, self.dataset.tag))})

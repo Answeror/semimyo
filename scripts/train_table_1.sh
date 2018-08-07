@@ -5,7 +5,7 @@ scripts/app train_semimyo \
   --log log --snapshot model \
   --root .cache/semimyo-v$ver \
   --batch-size 1000 --dataset "ninapro.db1.raw_semg_prev" --dataset-args '{"step":10}' \
-  --balance-gesture 1 \
+  --dataiter-args '{"norest":1,"balance_gesture":1}' \
   --preprocess '{ninapro-lowpass,identity,identity}' \
   --symbol 'semimyo_order' \
   --module 'semimyo_order' \
@@ -17,7 +17,7 @@ for i in $(seq 0 26 | shuf); do
     --root .cache/semimyo-fold-$i-v$ver \
     --params .cache/semimyo-v$ver/model-0028.params \
     --batch-size 1000 --dataset "ninapro.db1.raw_semg_prev" --dataset-args '{"step":10}' \
-    --balance-gesture 1 \
+    --dataiter-args '{"norest":1,"balance_gesture":1}' \
     --preprocess '{ninapro-lowpass,identity,identity}' \
     --symbol 'semimyo_order' \
     --module 'semimyo_order' \
@@ -63,7 +63,7 @@ scripts/app train_semimyo \
   --log log --snapshot model \
   --root .cache/semimyo-v$ver \
   --batch-size 1000 --dataset "ninapro.db1.raw_semg_pose_prev" --dataset-args '{"num_pose":512,"step":10}' \
-  --balance-gesture 1 \
+  --dataiter-args '{"norest":1,"balance_gesture":1}' \
   --preprocess '{ninapro-lowpass}' \
   --symbol 'semimyo_pose_order' \
   --module 'semimyo_pose_order' \
@@ -75,7 +75,7 @@ for i in $(seq 0 26 | shuf); do
     --root .cache/semimyo-fold-$i-v$ver \
     --params .cache/semimyo-v$ver/model-0028.params \
     --batch-size 1000 --dataset "ninapro.db1.raw_semg_pose_prev" --dataset-args '{"num_pose":512,"step":10}' \
-    --balance-gesture 1 \
+    --dataiter-args '{"norest":1,"balance_gesture":1}' \
     --preprocess '{ninapro-lowpass}' \
     --symbol 'semimyo_pose_order' \
     --module 'semimyo_pose_order' \

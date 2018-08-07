@@ -86,10 +86,13 @@ class Symbol(BaseSymbol):
             assert has_gesture_branch
             self.net = gesture_branch
 
-        self.net.num_semg_row = num_semg_row
-        self.net.num_semg_col = num_semg_col
-        self.net.num_semg_channel = num_semg_channel
-        self.net.data_shape_1 = num_semg_channel
+        try:
+          self.net.num_semg_row = num_semg_row
+          self.net.num_semg_col = num_semg_col
+          self.net.num_semg_channel = num_semg_channel
+          self.net.data_shape_1 = num_semg_channel
+        except:
+          pass
 
     def infer_shape(self, data):
         net = data
